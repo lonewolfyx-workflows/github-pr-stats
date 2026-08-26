@@ -366,6 +366,40 @@ function deduplicatePullRequests(
   )
 }
 
+function getRepositoryOwner(
+  repository: string,
+): string {
+  const separatorIndex
+    = repository.indexOf('/')
+
+  if (separatorIndex <= 0) {
+    throw new Error(
+      `Invalid repository name: ${repository}`,
+    )
+  }
+
+  return repository.slice(
+    0,
+    separatorIndex,
+  )
+}
+
+export function filterExternalRepositoryPullRequests(
+  pullRequests: PullRequestRecord[],
+  username: string,
+): PullRequestRecord[] {
+  const normalizedUsername
+    = username.toLowerCase()
+
+  return pullRequests.filter(
+    pullRequest =>
+      getRepositoryOwner(
+        pullRequest.repository,
+      ).toLowerCase()
+      !== normalizedUsername,
+  )
+}
+
 export async function getUserPullRequests(
   client: GitHubClient,
   username: string,
@@ -401,8 +435,11 @@ export async function getUserPullRequests(
   return {
     username: canonicalUsername,
     pullRequests:
-            deduplicatePullRequests(
-              pullRequests,
-            ),
+      filterExternalRepositoryPullRequests(
+        deduplicatePullRequests(
+          pullRequests,
+        ),
+        canonicalUsername,
+      ),
   }
 }

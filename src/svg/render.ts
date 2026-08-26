@@ -204,11 +204,11 @@ export function renderSvg({
   aria-labelledby="title desc"
 >
   <title id="title">
-    Pull Request contributions for @${escapeXml(username)}
+    Repositories contributed to by @${escapeXml(username)}
   </title>
 
   <desc id="desc">
-    Repository-level GitHub pull request contribution statistics.
+    Pull request statistics for repositories not owned by the user.
   </desc>
 
   <style>
@@ -330,7 +330,7 @@ export function renderSvg({
     x="24"
     y="28"
     class="title"
-  >@${escapeXml(username)} · Pull Request Contributions</text>
+  >@${escapeXml(username)} · Repositories Contributed</text>
 
   <text
     x="24"

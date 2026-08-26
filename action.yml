@@ -1,8 +1,8 @@
 name: GitHub PR Stats
 
 description: >
-  Generate repository-level pull request contribution statistics
-  for a GitHub user and render them as an SVG table.
+  Generate pull request statistics for repositories contributed to
+  but not owned by a GitHub user, and render them as an SVG table.
 
 inputs:
   username:
@@ -26,7 +26,7 @@ inputs:
 
 outputs:
   data:
-    description: Repository PR statistics as JSON
+    description: External repository PR statistics as JSON
     value: ${{ steps.generate.outputs.data }}
 
   svg-path:
