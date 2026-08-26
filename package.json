@@ -1,0 +1,43 @@
+{
+  "name": "github-pr-stats",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@11.9.0",
+  "description": "",
+  "author": "lonewolfyx",
+  "license": "MIT",
+  "keywords": [
+    "github-stats"
+  ],
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix",
+    "prepare": "simple-git-hooks"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^9.3.0",
+    "@lonewolfyx/tsconfig": "^0.0.6",
+    "@types/node": "^26.3.0",
+    "eslint": "^10.9.1",
+    "jiti": "^2.7.0",
+    "lint-staged": "^17.3.0",
+    "picocolors": "^1.1.1",
+    "simple-git-hooks": "^2.13.1",
+    "tsdown": "^0.22.14",
+    "tsx": "^4.23.12",
+    "typescript": "^6.0.3",
+    "verify-git-commit": "^0.0.1"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged",
+    "commit-msg": "npx verify-git-commit"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  }
+}
