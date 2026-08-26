@@ -15,10 +15,8 @@ name: Generate PR Stats
 
 on:
   workflow_dispatch:
-  push:
-    branches: [master]
-    paths-ignore:
-      - github-pr-stats.svg
+  schedule:
+    - cron: '0 */6 * * *'
 
 permissions:
   contents: write
