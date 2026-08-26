@@ -4,18 +4,13 @@ description: >
   Generate repository-level pull request contribution statistics
   for a GitHub user and render them as an SVG table.
 
-author: your-name
-
 inputs:
   username:
     description: GitHub username
     required: true
 
   token:
-    description: >
-      GitHub token used to query the API.
-      Defaults to github.token. A PAT can be supplied when additional
-      repository access is required.
+    description: GitHub token
     required: false
     default: ${{ github.token }}
 
@@ -25,44 +20,54 @@ inputs:
     default: github-pr-stats.svg
 
   max-rows:
-    description: >
-      Maximum number of repositories rendered into the SVG.
-      Use 0 to render all repositories.
+    description: Maximum number of repositories
     required: false
     default: '0'
 
 outputs:
   data:
     description: Repository PR statistics as JSON
+    value: ${{ steps.generate.outputs.data }}
 
   svg-path:
     description: Generated SVG file path
+    value: ${{ steps.generate.outputs.svg-path }}
 
   repository-count:
     description: Number of repositories
+    value: ${{ steps.generate.outputs.repository-count }}
 
   pr-count:
     description: Total number of pull requests
+    value: ${{ steps.generate.outputs.pr-count }}
 
 runs:
   using: composite
-  steps:
-    - uses: actions/checkout@v7
 
+  steps:
     - name: Install pnpm
       uses: pnpm/action-setup@v6
 
-    - name: Set node
+    - name: Set Node.js
       uses: actions/setup-node@v7
       with:
         node-version: lts/*
-        cache: pnpm
 
-    - name: Install
-      run: pnpm i
+    - name: Install dependencies
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: pnpm install --frozen-lockfile
 
-    - name: Generate Github PR Stats
-      run: tsx ./src/index.ts
+    - name: Generate GitHub PR Stats
+      id: generate
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      env:
+        INPUT_USERNAME: ${{ inputs.username }}
+        INPUT_TOKEN: ${{ inputs.token }}
+        INPUT_OUTPUT: ${{ inputs.output }}
+        INPUT_MAX-ROWS: ${{ inputs.max-rows }}
+      run: pnpm exec tsx ./src/index.ts
 
 branding:
   icon: git-pull-request
