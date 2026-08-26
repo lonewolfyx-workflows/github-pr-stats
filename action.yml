@@ -1,0 +1,69 @@
+name: GitHub PR Stats
+
+description: >
+  Generate repository-level pull request contribution statistics
+  for a GitHub user and render them as an SVG table.
+
+author: your-name
+
+inputs:
+  username:
+    description: GitHub username
+    required: true
+
+  token:
+    description: >
+      GitHub token used to query the API.
+      Defaults to github.token. A PAT can be supplied when additional
+      repository access is required.
+    required: false
+    default: ${{ github.token }}
+
+  output:
+    description: SVG output file path
+    required: false
+    default: github-pr-stats.svg
+
+  max-rows:
+    description: >
+      Maximum number of repositories rendered into the SVG.
+      Use 0 to render all repositories.
+    required: false
+    default: '0'
+
+outputs:
+  data:
+    description: Repository PR statistics as JSON
+
+  svg-path:
+    description: Generated SVG file path
+
+  repository-count:
+    description: Number of repositories
+
+  pr-count:
+    description: Total number of pull requests
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v7
+
+    - name: Install pnpm
+      uses: pnpm/action-setup@v6
+
+    - name: Set node
+      uses: actions/setup-node@v7
+      with:
+        node-version: lts/*
+        cache: pnpm
+
+    - name: Install
+      run: pnpm i
+
+    - name: Generate Github PR Stats
+      run: tsx ./src/index.ts
+
+branding:
+  icon: git-pull-request
+  color: blue
