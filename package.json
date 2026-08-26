@@ -15,6 +15,10 @@
     "lint:fix": "eslint --fix",
     "prepare": "simple-git-hooks"
   },
+  "dependencies": {
+    "@actions/core": "^3.0.1",
+    "@actions/github": "^9.1.1"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^9.3.0",
     "@lonewolfyx/tsconfig": "^0.0.6",
